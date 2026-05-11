@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Akıllı bina enerji tahmini, recourse aksiyonları ve iki katlı 3D Digital Twin sahnesi."
+    />
+    <title>Smart Building Digital Twin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Ana içeriğe geç</a>
+
+    <div class="app-shell">
+      <header class="hero-panel app-header" aria-labelledby="page-title">
+        <div class="brand-block">
+          <p class="eyebrow">Enerji optimizasyon ikizi</p>
+          <h1 id="page-title">2 Katlı Akıllı Bina Digital Twin</h1>
+          <p class="hero-copy">
+            Saatlik akışı durdur, ACE önerilerini incele, sanal bina üzerinde uygula.
+          </p>
+        </div>
+
+        <div class="hero-actions" aria-label="Ana sahne kontrolleri">
+          <button class="button primary" id="apply-recourse" type="button">
+            ACE öneriyi uygula
+          </button>
+          <button class="button ghost" id="reset-scene" type="button">
+            Sahneyi sıfırla
+          </button>
+        </div>
+      </header>
+
+      <main id="main" class="dashboard-grid">
+        <section class="panel metrics-panel" aria-labelledby="metrics-title">
+          <div class="section-heading">
+            <p class="eyebrow">Tahmin modeli</p>
+            <h2 id="metrics-title">Model ve bölge durumu</h2>
+          </div>
+
+          <div class="sim-control" aria-label="Saatlik simülasyon kontrolleri">
+            <div class="sim-control__top">
+              <button class="button primary compact" id="play-pause" type="button">
+                Akışı başlat
+              </button>
+              <select id="speed-select" aria-label="Akış hızı">
+                <option value="1200">1x</option>
+                <option value="650" selected>2x</option>
+                <option value="280">5x</option>
+              </select>
+            </div>
+            <label for="frame-slider">Saatlik zaman akışı</label>
+            <input id="frame-slider" type="range" min="0" max="0" value="0" step="1" />
+            <p class="timeline-label" id="timeline-label">Saatlik veri yükleniyor</p>
+          </div>
+
+          <div class="metric-grid" id="metric-grid" aria-live="polite">
+            <article class="metric-card skeleton"></article>
+            <article class="metric-card skeleton"></article>
+            <article class="metric-card skeleton"></article>
+          </div>
+
+          <div class="zone-track" aria-label="Spend zone esikleri">
+            <div class="zone-node" data-zone="s1">S1</div>
+            <div class="zone-node" data-zone="s2">S2</div>
+            <div class="zone-node" data-zone="s3">S3</div>
+            <div class="zone-node" data-zone="s4">S4</div>
+            <div class="zone-node" data-zone="s5">S5</div>
+          </div>
+        </section>
+
+        <section class="panel scene-panel" aria-labelledby="scene-title">
+          <div class="scene-toolbar">
+            <div>
+              <p class="eyebrow">Digital Twin sahnesi</p>
+              <h2 id="scene-title">Oda bazlı 3D enerji simülasyonu</h2>
+              <p class="scene-copy">Katlar, odalar, cihazlar ve ACE aksiyonları aynı mekansal modelde izlenir.</p>
+            </div>
+            <div class="segmented-control" role="group" aria-label="Kat filtresi">
+              <button class="chip active" type="button" data-floor-filter="all">Tüm</button>
+              <button class="chip" type="button" data-floor-filter="floor1">Kat 1</button>
+              <button class="chip" type="button" data-floor-filter="floor2">Kat 2</button>
+              <button class="chip" type="button" data-floor-filter="shared">Ortak</button>
+            </div>
+          </div>
+
+          <div class="scene-frame">
+            <canvas
+              id="twin-canvas"
+              aria-label="İki katlı bina digital twin 3D sahnesi"
+              role="img"
+            ></canvas>
+            <div class="scene-hud" id="scene-hud">
+              <span class="status-dot"></span>
+              <span id="hud-text">DT JSON yükleniyor</span>
+            </div>
+            <div class="scene-caption">
+              Turuncu çizgiler ACE'nin dokunmayı önerdiği yükleri gösterir.
+            </div>
+            <div class="scene-legend" aria-label="Cihaz kategori renkleri">
+              <span><i class="legend hvac"></i>HVAC</span>
+              <span><i class="legend lighting"></i>Aydınlatma</span>
+              <span><i class="legend plug"></i>Priz</span>
+              <span><i class="legend shared"></i>Ortak</span>
+              <span><i class="legend action"></i>Aksiyon</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel inspector-panel" aria-labelledby="inspector-title">
+          <div class="section-heading">
+            <p class="eyebrow">Cihaz detayı</p>
+            <h2 id="inspector-title">Seçili cihaz</h2>
+          </div>
+          <div id="device-inspector" class="device-inspector" aria-live="polite">
+            <p class="empty-state">Sahneden veya listeden bir cihaz seç.</p>
+          </div>
+
+          <form class="manual-form" id="manual-form" aria-labelledby="manual-title">
+            <h3 id="manual-title">Manuel müdahale</h3>
+            <label for="manual-device">Cihaz</label>
+            <select id="manual-device" name="manual-device"></select>
+
+            <label for="manual-reduction">Azaltma oranı</label>
+            <input
+              id="manual-reduction"
+              name="manual-reduction"
+              type="range"
+              min="0"
+              max="100"
+              value="25"
+              step="5"
+            />
+            <p class="helper-text" id="manual-helper">Seçili cihaz için geçici görsel simülasyon.</p>
+
+            <div class="manual-actions">
+              <button class="button secondary" id="preview-manual" type="submit">
+                Simüle et
+              </button>
+              <button class="button ghost" id="clear-manual" type="button">
+                Temizle
+              </button>
+            </div>
+          </form>
+        </aside>
+
+        <section class="panel floors-panel" aria-labelledby="floors-title">
+          <div class="section-heading">
+            <p class="eyebrow">Katlar</p>
+            <h2 id="floors-title">Kat enerji durumu</h2>
+          </div>
+          <div class="floor-list" id="floor-list"></div>
+        </section>
+
+        <section class="panel actions-panel" aria-labelledby="actions-title">
+          <div class="section-heading">
+            <p class="eyebrow">ACE / XAI</p>
+            <h2 id="actions-title">Ne öneriyor, neden?</h2>
+          </div>
+          <div id="action-list" class="action-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

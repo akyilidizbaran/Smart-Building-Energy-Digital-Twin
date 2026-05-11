@@ -1,0 +1,2 @@
+scope,selected_model,best_value_val_mae,zone_thresholds_kwh
+building,CatBoost_Optuna,0.2939393595573877,"[1.0, 1.5, 2.0, 3.0]"

@@ -1,0 +1,690 @@
+{
+  "schema_version": "dt_state_v1",
+  "timestamp": "2016-10-06T18:00:00",
+  "scope": "building",
+  "unit": "kWh",
+  "zone_config_version": "v1_fixed_kwh",
+  "zone_config": {
+    "building": [
+      1.0,
+      1.5,
+      2.0,
+      3.0
+    ],
+    "floor1": [
+      0.2,
+      0.3,
+      0.5,
+      1.2
+    ],
+    "floor2": [
+      0.35,
+      0.6,
+      0.9,
+      1.6
+    ]
+  },
+  "model": {
+    "name": "CatBoost_Optuna",
+    "target": "building_target_t_plus_1_kwh",
+    "prediction_horizon": "t+1",
+    "metrics": {
+      "MAE": 0.3376037097471304,
+      "RMSE": 0.534106886192403,
+      "R2": 0.7483128091291942,
+      "zone_accuracy": 0.6664630421502749,
+      "mean_ordinal_error": 0.3598045204642639
+    }
+  },
+  "building": {
+    "current_total_kwh": 2.088,
+    "predicted_t_plus_1_kwh": 1.7599378618946768,
+    "predicted_zone": "s3",
+    "target_zone": "s2"
+  },
+  "floors": [
+    {
+      "id": "floor1",
+      "label": "1st Floor",
+      "current_kwh": 0.16450000000000004,
+      "zone": "s1",
+      "device_ids": [
+        "1st_flr_ahu",
+        "1st_flr_hp",
+        "1st_flr_lights",
+        "1st_flr_lobby_recp",
+        "1st_flr_office_1_recp",
+        "1st_flr_office_2_recp",
+        "1st_flr_office_3_recp",
+        "1st_flr_bathroom",
+        "1st_flr_kitchen",
+        "1st_flr_copy_room_recp",
+        "1st_flr_utility_room_recp"
+      ]
+    },
+    {
+      "id": "floor2",
+      "label": "2nd Floor",
+      "current_kwh": 1.5405000000000002,
+      "zone": "s4",
+      "device_ids": [
+        "2nd_flr_ahu_classroom",
+        "2nd_flr_ahu_computer_room",
+        "2nd_flr_hp_classroom",
+        "2nd_flr_hp_computer_room",
+        "2nd_flr_office_recp",
+        "2nd_flr_oven",
+        "2nd_flr_lights",
+        "2nd_flr_computer_room_recp",
+        "2nd_flr_classroom_1_recp",
+        "2nd_flr_classroom_2_recp",
+        "2nd_flr_bathoom",
+        "2nd_flr_kitchen",
+        "2nd_flr_kitchen_recp_dishwasher",
+        "2nd_flr_water_cooler",
+        "2nd_flr_computer_room_kitchen_recp",
+        "2nd_flr_classroom_2_copy_room_recp",
+        "2nd_flr_storage_room_computer_room_recp"
+      ]
+    }
+  ],
+  "shared_loads": {
+    "current_kwh": 0.383,
+    "device_ids": [
+      "refridgerator",
+      "exterior_lights",
+      "erv",
+      "water_heater"
+    ]
+  },
+  "devices": [
+    {
+      "id": "1st_flr_ahu",
+      "label": "1st flr AHU",
+      "source_column": "1st flr AHU",
+      "floor": "floor1",
+      "category": "hvac",
+      "current_kwh": 0.0065,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -3.5,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_hp",
+      "label": "1st flr HP",
+      "source_column": "1st flr HP ",
+      "floor": "floor1",
+      "category": "hvac",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -2.1,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_lights",
+      "label": "1st flr Lights",
+      "source_column": "1st flr Lights",
+      "floor": "floor1",
+      "category": "lighting",
+      "current_kwh": 0.021,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.5,
+      "comfort_weight": 2,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_lobby_recp",
+      "label": "1st flr Lobby recp",
+      "source_column": "1st flr Lobby recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.004,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_office_1_recp",
+      "label": "1st flr Office #1 recp",
+      "source_column": "1st flr Office #1 recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.01,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 2.0999999999999996,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_office_2_recp",
+      "label": "1st flr Office #2 recp",
+      "source_column": "1st flr Office #2 recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.028,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 3.5,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "1st_flr_office_3_recp",
+      "label": "1st flr Office #3 recp",
+      "source_column": "1st flr Office #3 recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.044,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -3.5,
+        "y": 0.0,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "1st_flr_bathroom",
+      "label": "1st flr Bathroom",
+      "source_column": "1st flr Bathroom",
+      "floor": "floor1",
+      "category": "service_load",
+      "current_kwh": 0.026,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -2.1,
+        "y": 0.0,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "1st_flr_kitchen",
+      "label": "1st flr Kitchen",
+      "source_column": "1st flr Kitchen",
+      "floor": "floor1",
+      "category": "service_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 0.0,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "1st_flr_copy_room_recp",
+      "label": "1st flr Copy Room recp",
+      "source_column": "1st flr Copy Room recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.009,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 0.0,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "1st_flr_utility_room_recp",
+      "label": "1st flr Utility Room recp",
+      "source_column": "1st flr Utility Room recp",
+      "floor": "floor1",
+      "category": "plug_load",
+      "current_kwh": 0.016,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 2.0999999999999996,
+        "y": 0.0,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_ahu_classroom",
+      "label": "2nd flr AHU - Classroom",
+      "source_column": "2nd flr AHU - Classroom ",
+      "floor": "floor2",
+      "category": "hvac",
+      "current_kwh": 0.2275,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -3.5,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_ahu_computer_room",
+      "label": "2nd flr AHU - Computer Room",
+      "source_column": "2nd flr AHU - Computer Room",
+      "floor": "floor2",
+      "category": "hvac",
+      "current_kwh": 0.103,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -2.1,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_hp_classroom",
+      "label": "2nd flr HP - Classroom",
+      "source_column": "2nd flr HP - Classroom",
+      "floor": "floor2",
+      "category": "hvac",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_hp_computer_room",
+      "label": "2nd flr HP - Computer Room",
+      "source_column": "2nd flr HP - Computer Room",
+      "floor": "floor2",
+      "category": "hvac",
+      "current_kwh": 0.682,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_office_recp",
+      "label": "2nd flr Office recp",
+      "source_column": "2nd flr Office recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 2.0999999999999996,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_oven",
+      "label": "2nd flr Oven",
+      "source_column": "2nd flr Oven",
+      "floor": "floor2",
+      "category": "appliance",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.6,
+      "comfort_weight": 2,
+      "scene": {
+        "x": 3.5,
+        "y": 1.25,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "2nd_flr_lights",
+      "label": "2nd flr Lights",
+      "source_column": "2nd flr Lights",
+      "floor": "floor2",
+      "category": "lighting",
+      "current_kwh": 0.312,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.5,
+      "comfort_weight": 2,
+      "scene": {
+        "x": -3.5,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_computer_room_recp",
+      "label": "2nd flr Computer Room recp",
+      "source_column": "2nd flr Computer Room recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -2.1,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_classroom_1_recp",
+      "label": "2nd flr Classroom #1 recp",
+      "source_column": "2nd flr Classroom #1 recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.124,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_classroom_2_recp",
+      "label": "2nd flr Classroom #2 recp",
+      "source_column": "2nd flr Classroom #2 recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_bathoom",
+      "label": "2nd flr Bathoom",
+      "source_column": "2nd flr Bathoom",
+      "floor": "floor2",
+      "category": "service_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 2.0999999999999996,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_kitchen",
+      "label": "2nd flr Kitchen",
+      "source_column": "2nd flr Kitchen",
+      "floor": "floor2",
+      "category": "service_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 3.5,
+        "y": 1.25,
+        "z": -0.6000000000000001
+      }
+    },
+    {
+      "id": "2nd_flr_kitchen_recp_dishwasher",
+      "label": "2nd flr Kitchen recp + Dishwasher",
+      "source_column": "2nd flr Kitchen recp + Dishwasher",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.004,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -3.5,
+        "y": 1.25,
+        "z": 0.5999999999999999
+      }
+    },
+    {
+      "id": "2nd_flr_water_cooler",
+      "label": "2nd flr Water Cooler",
+      "source_column": "2nd flr Water Cooler",
+      "floor": "floor2",
+      "category": "appliance",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -2.1,
+        "y": 1.25,
+        "z": 0.5999999999999999
+      }
+    },
+    {
+      "id": "2nd_flr_computer_room_kitchen_recp",
+      "label": "2nd flr Computer Room + Kitchen recp",
+      "source_column": "2nd flr Computer Room + Kitchen recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.082,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 1.25,
+        "z": 0.5999999999999999
+      }
+    },
+    {
+      "id": "2nd_flr_classroom_2_copy_room_recp",
+      "label": "2nd flr Classroom #2 + Copy Room recp",
+      "source_column": "2nd flr Classroom #2 + Copy Room recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.006,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 1.25,
+        "z": 0.5999999999999999
+      }
+    },
+    {
+      "id": "2nd_flr_storage_room_computer_room_recp",
+      "label": "2nd flr Storage Room + Computer Room recp",
+      "source_column": "2nd flr Storage Room + Computer Room recp",
+      "floor": "floor2",
+      "category": "plug_load",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.8,
+      "comfort_weight": 1,
+      "scene": {
+        "x": 2.0999999999999996,
+        "y": 1.25,
+        "z": 0.5999999999999999
+      }
+    },
+    {
+      "id": "refridgerator",
+      "label": "Refridgerator",
+      "source_column": "Refridgerator",
+      "floor": "shared",
+      "category": "appliance",
+      "current_kwh": 0.042,
+      "actionable": false,
+      "immutable": true,
+      "max_auto_reduction_fraction": 0.0,
+      "comfort_weight": 1,
+      "scene": {
+        "x": -3.5,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "exterior_lights",
+      "label": "Exterior Lights",
+      "source_column": "Exterior Lights",
+      "floor": "shared",
+      "category": "lighting",
+      "current_kwh": 0.341,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.7,
+      "comfort_weight": 2,
+      "scene": {
+        "x": -2.1,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "erv",
+      "label": "ERV",
+      "source_column": "ERV",
+      "floor": "shared",
+      "category": "hvac",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.3,
+      "comfort_weight": 3,
+      "scene": {
+        "x": -0.7000000000000002,
+        "y": 0.0,
+        "z": -1.8
+      }
+    },
+    {
+      "id": "water_heater",
+      "label": "Water Heater",
+      "source_column": "Water Heater",
+      "floor": "shared",
+      "category": "appliance",
+      "current_kwh": 0.0,
+      "actionable": true,
+      "immutable": false,
+      "max_auto_reduction_fraction": 0.6,
+      "comfort_weight": 2,
+      "scene": {
+        "x": 0.6999999999999993,
+        "y": 0.0,
+        "z": -1.8
+      }
+    }
+  ],
+  "recourse": {
+    "method": "ACE_BEAM",
+    "success": true,
+    "before": {
+      "predicted_kwh": 1.7599378618946768,
+      "zone": "s3"
+    },
+    "after": {
+      "predicted_kwh": 1.469053674095402,
+      "zone": "s2"
+    },
+    "actions": [
+      {
+        "feature": "2nd flr Classroom #1 recp",
+        "device_id": "2nd_flr_classroom_1_recp",
+        "action_type": "reduce_percent",
+        "reduction_fraction": 0.8,
+        "before_kwh": 0.124,
+        "after_kwh": 0.02479999999999999,
+        "delta_kwh": 0.09920000000000001,
+        "cost_weight": 1
+      },
+      {
+        "feature": "2nd flr Lights",
+        "device_id": "2nd_flr_lights",
+        "action_type": "reduce_percent",
+        "reduction_fraction": 0.5,
+        "before_kwh": 0.312,
+        "after_kwh": 0.156,
+        "delta_kwh": 0.156,
+        "cost_weight": 2
+      }
+    ],
+    "total_cost": 1.8,
+    "changed_feature_count": 2
+  },
+  "manual_override": {
+    "enabled": true,
+    "supported_actions": [
+      "reduce_percent",
+      "turn_off",
+      "restore"
+    ]
+  }
+}

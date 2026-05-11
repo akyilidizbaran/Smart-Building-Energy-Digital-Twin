@@ -1,0 +1,2 @@
+scope,selected_model,zone_thresholds_kwh
+building,CatBoost,"[1.0, 1.5, 2.0, 3.0]"

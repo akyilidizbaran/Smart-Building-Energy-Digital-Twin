@@ -1,0 +1,2 @@
+scope,selected_model,zone_thresholds_kwh,MAE,RMSE,R2,zone_accuracy,mean_ordinal_error
+building,CatBoost_Optuna,"[1.0, 1.5, 2.0, 3.0]",0.3376037097471304,0.534106886192403,0.7483128091291942,0.6664630421502749,0.3598045204642639

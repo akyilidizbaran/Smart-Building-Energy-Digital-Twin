@@ -1,0 +1,34 @@
+{
+  "target_scope": "building",
+  "factual_index": 20185,
+  "factual_timestamp": "2016-10-06 18:00:00",
+  "factual_prediction": {
+    "predicted_kwh": 1.7599378618946768,
+    "predicted_zone": 3
+  },
+  "target_zone": 2,
+  "selected_models": {
+    "building": "CatBoost_Optuna"
+  },
+  "model_metrics": {
+    "building": {
+      "MAE": 0.3376037097471304,
+      "RMSE": 0.534106886192403,
+      "R2": 0.7483128091291942,
+      "zone_accuracy": 0.6664630421502749,
+      "mean_ordinal_error": 0.3598045204642639
+    }
+  },
+  "zone_thresholds_kwh": {
+    "building": [
+      1.0,
+      1.5,
+      2.0,
+      3.0
+    ]
+  },
+  "dt_state_json": "/Users/baran/Desktop/Akıllı Bina Sistemleri/Final/outputs/dt_state_v1.json",
+  "device_catalog_csv": "/Users/baran/Desktop/Akıllı Bina Sistemleri/Final/outputs/dt_device_catalog.csv",
+  "output_csv": "/Users/baran/Desktop/Akıllı Bina Sistemleri/Final/outputs/building_dt_recourse_results.csv",
+  "output_plot": "/Users/baran/Desktop/Akıllı Bina Sistemleri/Final/outputs/building_dt_recourse_summary.png"
+}

@@ -1,0 +1,38 @@
+{
+  "scope": "building",
+  "n_trials": 30,
+  "best_value_val_mae": 0.2939393595573877,
+  "best_params": {
+    "loss_function": "RMSE",
+    "iterations": 900,
+    "depth": 4,
+    "learning_rate": 0.08710077636975316,
+    "l2_leaf_reg": 4.615521474578804,
+    "random_strength": 0.5635030720975491,
+    "bagging_temperature": 0.8223515418740998,
+    "border_count": 64,
+    "min_data_in_leaf": 27,
+    "eval_metric": "MAE",
+    "random_seed": 42,
+    "verbose": false,
+    "allow_writing_files": false
+  },
+  "validation_metrics": {
+    "MAE": 0.2939393595573877,
+    "RMSE": 0.45742836802243003,
+    "R2": 0.8330251467825518,
+    "zone_accuracy": 0.7250229147571036,
+    "mean_ordinal_error": 0.29178124045218456
+  },
+  "validation_recourse_metrics": {
+    "recourse_success_rate": 0.9,
+    "recourse_mean_cost": 6.820000000000002,
+    "recourse_mean_delta_kwh": 0.5623791512552115
+  },
+  "zone_thresholds_kwh": [
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ]
+}

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+env/
+
+# Notebook/runtime noise
+.ipynb_checkpoints/
+catboost_info/
+artifacts/
+tmp/
+logs/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated local files
+*.log
+*.tmp
+

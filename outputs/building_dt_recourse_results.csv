@@ -1,0 +1,7 @@
+method,before_kwh,after_kwh,before_zone,after_zone,delta_kwh,changed_count,cost,graph_distance,endpoint_index,failure_reason,changed_features,reductions_kwh,success
+ACE_BEAM,1.7599378618946768,1.469053674095402,3,2,0.2908841877992747,2,1.8,,,,"['2nd flr Classroom #1 recp', '2nd flr Lights']","{'2nd flr Classroom #1 recp': 0.09920000000000001, '2nd flr Lights': 0.156}",True
+ACE_BEAM,1.7599378618946768,1.405035192205357,3,2,0.3549026696893198,3,2.6,,,,"['2nd flr Classroom #1 recp', '2nd flr Lights', '1st flr Office #3 recp']","{'2nd flr Classroom #1 recp': 0.09920000000000001, '2nd flr Lights': 0.156, '1st flr Office #3 recp': 0.0352}",True
+ACE_BEAM,1.7599378618946768,1.450201811771735,3,2,0.3097360501229418,3,2.6,,,,"['2nd flr Classroom #1 recp', '2nd flr Lights', '2nd flr Computer Room + Kitchen recp']","{'2nd flr Classroom #1 recp': 0.09920000000000001, '2nd flr Lights': 0.156, '2nd flr Computer Room + Kitchen recp': 0.0656}",True
+ACE_BEAM,1.7599378618946768,1.4627154531017563,3,2,0.2972224087929205,3,2.6,,,,"['2nd flr Classroom #1 recp', '2nd flr Lights', '1st flr Bathroom']","{'2nd flr Classroom #1 recp': 0.09920000000000001, '2nd flr Lights': 0.156, '1st flr Bathroom': 0.0208}",True
+FACE_GRAPH,1.7599378618946768,1.7599378618946768,3,3,0.0,0,0.0,,,no_reduction_only_train_endpoint_in_target_zone,[],{},False
+ACE_BEAM,1.7599378618946768,1.6512432334675988,3,3,0.108694628427078,1,0.8,,,,['2nd flr Classroom #1 recp'],{'2nd flr Classroom #1 recp': 0.09920000000000001},False
