@@ -6,10 +6,10 @@
   "zone_config_version": "v1_fixed_kwh",
   "zone_config": {
     "building": [
-      1.0,
+      1,
       1.5,
-      2.0,
-      3.0
+      2,
+      3
     ],
     "floor1": [
       0.2,
@@ -45,7 +45,7 @@
   "floors": [
     {
       "id": "floor1",
-      "label": "1st Floor",
+      "label": "1. Kat",
       "current_kwh": 0.16450000000000004,
       "zone": "s1",
       "device_ids": [
@@ -64,7 +64,7 @@
     },
     {
       "id": "floor2",
-      "label": "2nd Floor",
+      "label": "2. Kat",
       "current_kwh": 1.5405000000000002,
       "zone": "s4",
       "device_ids": [
@@ -78,7 +78,7 @@
         "2nd_flr_computer_room_recp",
         "2nd_flr_classroom_1_recp",
         "2nd_flr_classroom_2_recp",
-        "2nd_flr_bathoom",
+        "2nd_flr_bathroom",
         "2nd_flr_kitchen",
         "2nd_flr_kitchen_recp_dishwasher",
         "2nd_flr_water_cooler",
@@ -91,7 +91,7 @@
   "shared_loads": {
     "current_kwh": 0.383,
     "device_ids": [
-      "refridgerator",
+      "refrigerator",
       "exterior_lights",
       "erv",
       "water_heater"
@@ -100,7 +100,7 @@
   "devices": [
     {
       "id": "1st_flr_ahu",
-      "label": "1st flr AHU",
+      "label": "1. Kat AHU",
       "source_column": "1st flr AHU",
       "floor": "floor1",
       "category": "hvac",
@@ -111,30 +111,30 @@
       "comfort_weight": 3,
       "scene": {
         "x": -3.5,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_hp",
-      "label": "1st flr HP",
-      "source_column": "1st flr HP ",
+      "label": "1. Kat HP",
+      "source_column": "1st flr HP",
       "floor": "floor1",
       "category": "hvac",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.3,
       "comfort_weight": 3,
       "scene": {
         "x": -2.1,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_lights",
-      "label": "1st flr Lights",
+      "label": "1. Kat Aydınlatma",
       "source_column": "1st flr Lights",
       "floor": "floor1",
       "category": "lighting",
@@ -145,13 +145,13 @@
       "comfort_weight": 2,
       "scene": {
         "x": -0.7000000000000002,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_lobby_recp",
-      "label": "1st flr Lobby recp",
+      "label": "1. Kat Lobi priz",
       "source_column": "1st flr Lobby recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -162,13 +162,13 @@
       "comfort_weight": 1,
       "scene": {
         "x": 0.6999999999999993,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_office_1_recp",
-      "label": "1st flr Office #1 recp",
+      "label": "1. Kat Ofis #1 priz",
       "source_column": "1st flr Office #1 recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -179,13 +179,13 @@
       "comfort_weight": 1,
       "scene": {
         "x": 2.0999999999999996,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_office_2_recp",
-      "label": "1st flr Office #2 recp",
+      "label": "1. Kat Ofis #2 priz",
       "source_column": "1st flr Office #2 recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -196,13 +196,13 @@
       "comfort_weight": 1,
       "scene": {
         "x": 3.5,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "1st_flr_office_3_recp",
-      "label": "1st flr Office #3 recp",
+      "label": "1. Kat Ofis #3 priz",
       "source_column": "1st flr Office #3 recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -213,13 +213,13 @@
       "comfort_weight": 1,
       "scene": {
         "x": -3.5,
-        "y": 0.0,
+        "y": 0,
         "z": -0.6000000000000001
       }
     },
     {
       "id": "1st_flr_bathroom",
-      "label": "1st flr Bathroom",
+      "label": "1. Kat Banyo",
       "source_column": "1st flr Bathroom",
       "floor": "floor1",
       "category": "service_load",
@@ -230,30 +230,30 @@
       "comfort_weight": 1,
       "scene": {
         "x": -2.1,
-        "y": 0.0,
+        "y": 0,
         "z": -0.6000000000000001
       }
     },
     {
       "id": "1st_flr_kitchen",
-      "label": "1st flr Kitchen",
+      "label": "1. Kat Mutfak",
       "source_column": "1st flr Kitchen",
       "floor": "floor1",
       "category": "service_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
       "comfort_weight": 1,
       "scene": {
         "x": -0.7000000000000002,
-        "y": 0.0,
+        "y": 0,
         "z": -0.6000000000000001
       }
     },
     {
       "id": "1st_flr_copy_room_recp",
-      "label": "1st flr Copy Room recp",
+      "label": "1. Kat Kopyalama Odası priz",
       "source_column": "1st flr Copy Room recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -264,13 +264,13 @@
       "comfort_weight": 1,
       "scene": {
         "x": 0.6999999999999993,
-        "y": 0.0,
+        "y": 0,
         "z": -0.6000000000000001
       }
     },
     {
       "id": "1st_flr_utility_room_recp",
-      "label": "1st flr Utility Room recp",
+      "label": "1. Kat Teknik Oda priz",
       "source_column": "1st flr Utility Room recp",
       "floor": "floor1",
       "category": "plug_load",
@@ -281,14 +281,14 @@
       "comfort_weight": 1,
       "scene": {
         "x": 2.0999999999999996,
-        "y": 0.0,
+        "y": 0,
         "z": -0.6000000000000001
       }
     },
     {
       "id": "2nd_flr_ahu_classroom",
-      "label": "2nd flr AHU - Classroom",
-      "source_column": "2nd flr AHU - Classroom ",
+      "label": "2. Kat AHU - Derslik",
+      "source_column": "2nd flr AHU - Classroom",
       "floor": "floor2",
       "category": "hvac",
       "current_kwh": 0.2275,
@@ -304,7 +304,7 @@
     },
     {
       "id": "2nd_flr_ahu_computer_room",
-      "label": "2nd flr AHU - Computer Room",
+      "label": "2. Kat AHU - Bilgisayar Odası",
       "source_column": "2nd flr AHU - Computer Room",
       "floor": "floor2",
       "category": "hvac",
@@ -321,11 +321,11 @@
     },
     {
       "id": "2nd_flr_hp_classroom",
-      "label": "2nd flr HP - Classroom",
+      "label": "2. Kat HP - Derslik",
       "source_column": "2nd flr HP - Classroom",
       "floor": "floor2",
       "category": "hvac",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.3,
@@ -338,7 +338,7 @@
     },
     {
       "id": "2nd_flr_hp_computer_room",
-      "label": "2nd flr HP - Computer Room",
+      "label": "2. Kat HP - Bilgisayar Odası",
       "source_column": "2nd flr HP - Computer Room",
       "floor": "floor2",
       "category": "hvac",
@@ -355,11 +355,11 @@
     },
     {
       "id": "2nd_flr_office_recp",
-      "label": "2nd flr Office recp",
+      "label": "2. Kat Ofis priz",
       "source_column": "2nd flr Office recp",
       "floor": "floor2",
       "category": "plug_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -372,11 +372,11 @@
     },
     {
       "id": "2nd_flr_oven",
-      "label": "2nd flr Oven",
+      "label": "2. Kat Fırın",
       "source_column": "2nd flr Oven",
       "floor": "floor2",
       "category": "appliance",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.6,
@@ -389,7 +389,7 @@
     },
     {
       "id": "2nd_flr_lights",
-      "label": "2nd flr Lights",
+      "label": "2. Kat Aydınlatma",
       "source_column": "2nd flr Lights",
       "floor": "floor2",
       "category": "lighting",
@@ -406,11 +406,11 @@
     },
     {
       "id": "2nd_flr_computer_room_recp",
-      "label": "2nd flr Computer Room recp",
+      "label": "2. Kat Bilgisayar Odası priz",
       "source_column": "2nd flr Computer Room recp",
       "floor": "floor2",
       "category": "plug_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -423,7 +423,7 @@
     },
     {
       "id": "2nd_flr_classroom_1_recp",
-      "label": "2nd flr Classroom #1 recp",
+      "label": "2. Kat Derslik #1 priz",
       "source_column": "2nd flr Classroom #1 recp",
       "floor": "floor2",
       "category": "plug_load",
@@ -440,11 +440,11 @@
     },
     {
       "id": "2nd_flr_classroom_2_recp",
-      "label": "2nd flr Classroom #2 recp",
+      "label": "2. Kat Derslik #2 priz",
       "source_column": "2nd flr Classroom #2 recp",
       "floor": "floor2",
       "category": "plug_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -456,12 +456,12 @@
       }
     },
     {
-      "id": "2nd_flr_bathoom",
-      "label": "2nd flr Bathoom",
-      "source_column": "2nd flr Bathoom",
+      "id": "2nd_flr_bathroom",
+      "label": "2. Kat Banyo",
+      "source_column": "2nd flr Bathroom",
       "floor": "floor2",
       "category": "service_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -474,11 +474,11 @@
     },
     {
       "id": "2nd_flr_kitchen",
-      "label": "2nd flr Kitchen",
+      "label": "2. Kat Mutfak",
       "source_column": "2nd flr Kitchen",
       "floor": "floor2",
       "category": "service_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -491,7 +491,7 @@
     },
     {
       "id": "2nd_flr_kitchen_recp_dishwasher",
-      "label": "2nd flr Kitchen recp + Dishwasher",
+      "label": "2. Kat Mutfak priz + Bulaşık Makinesi",
       "source_column": "2nd flr Kitchen recp + Dishwasher",
       "floor": "floor2",
       "category": "plug_load",
@@ -508,11 +508,11 @@
     },
     {
       "id": "2nd_flr_water_cooler",
-      "label": "2nd flr Water Cooler",
+      "label": "2. Kat Su Sebili",
       "source_column": "2nd flr Water Cooler",
       "floor": "floor2",
       "category": "appliance",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -525,7 +525,7 @@
     },
     {
       "id": "2nd_flr_computer_room_kitchen_recp",
-      "label": "2nd flr Computer Room + Kitchen recp",
+      "label": "2. Kat Bilgisayar Odası + Mutfak priz",
       "source_column": "2nd flr Computer Room + Kitchen recp",
       "floor": "floor2",
       "category": "plug_load",
@@ -542,7 +542,7 @@
     },
     {
       "id": "2nd_flr_classroom_2_copy_room_recp",
-      "label": "2nd flr Classroom #2 + Copy Room recp",
+      "label": "2. Kat Derslik #2 + Kopyalama Odası priz",
       "source_column": "2nd flr Classroom #2 + Copy Room recp",
       "floor": "floor2",
       "category": "plug_load",
@@ -559,11 +559,11 @@
     },
     {
       "id": "2nd_flr_storage_room_computer_room_recp",
-      "label": "2nd flr Storage Room + Computer Room recp",
+      "label": "2. Kat Depo + Bilgisayar Odası priz",
       "source_column": "2nd flr Storage Room + Computer Room recp",
       "floor": "floor2",
       "category": "plug_load",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.8,
@@ -575,25 +575,25 @@
       }
     },
     {
-      "id": "refridgerator",
-      "label": "Refridgerator",
-      "source_column": "Refridgerator",
+      "id": "refrigerator",
+      "label": "Refrigerator",
+      "source_column": "Refrigerator",
       "floor": "shared",
       "category": "appliance",
       "current_kwh": 0.042,
       "actionable": false,
       "immutable": true,
-      "max_auto_reduction_fraction": 0.0,
+      "max_auto_reduction_fraction": 0,
       "comfort_weight": 1,
       "scene": {
         "x": -3.5,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "exterior_lights",
-      "label": "Exterior Lights",
+      "label": "Dış Aydınlatma",
       "source_column": "Exterior Lights",
       "floor": "shared",
       "category": "lighting",
@@ -604,7 +604,7 @@
       "comfort_weight": 2,
       "scene": {
         "x": -2.1,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
@@ -614,31 +614,31 @@
       "source_column": "ERV",
       "floor": "shared",
       "category": "hvac",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.3,
       "comfort_weight": 3,
       "scene": {
         "x": -0.7000000000000002,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     },
     {
       "id": "water_heater",
-      "label": "Water Heater",
+      "label": "Su Isıtıcı",
       "source_column": "Water Heater",
       "floor": "shared",
       "category": "appliance",
-      "current_kwh": 0.0,
+      "current_kwh": 0,
       "actionable": true,
       "immutable": false,
       "max_auto_reduction_fraction": 0.6,
       "comfort_weight": 2,
       "scene": {
         "x": 0.6999999999999993,
-        "y": 0.0,
+        "y": 0,
         "z": -1.8
       }
     }
@@ -663,7 +663,8 @@
         "before_kwh": 0.124,
         "after_kwh": 0.02479999999999999,
         "delta_kwh": 0.09920000000000001,
-        "cost_weight": 1
+        "cost_weight": 1,
+        "label": "2. Kat Derslik #1 priz"
       },
       {
         "feature": "2nd flr Lights",
@@ -673,7 +674,8 @@
         "before_kwh": 0.312,
         "after_kwh": 0.156,
         "delta_kwh": 0.156,
-        "cost_weight": 2
+        "cost_weight": 2,
+        "label": "2. Kat Aydınlatma"
       }
     ],
     "total_cost": 1.8,

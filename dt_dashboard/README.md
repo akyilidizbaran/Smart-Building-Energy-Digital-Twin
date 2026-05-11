@@ -1,47 +1,46 @@
 # Final Digital Twin Dashboard
 
-Standalone 3D/scene-based visualization for the frozen `dt_state_v1.json` contract.
+`dt_state_v1.json` kontratını kullanan bağımsız 3D Digital Twin dashboard.
 
-## Run
+## Çalıştırma
 
-From the project root:
+Proje kökünden:
 
 ```bash
-cd Final
 python3 -m http.server 8765
 ```
 
-Open:
+Aç:
 
 ```text
 http://127.0.0.1:8765/dt_dashboard/
 ```
 
-The dashboard reads:
+Dashboard şu dosyaları okur:
 
 ```text
-Final/outputs/dt_state_v1.json
-Final/outputs/dt_timeseries_v1.json
+outputs/dt_state_v1.json
+outputs/dt_timeseries_v1.json
 ```
 
-## Scope
+## Kapsam
 
-- Two-floor 3D building scene.
-- Device catalog visualization from `dt_state_v1.devices`.
-- Building prediction and zone status from `dt_state_v1.building`.
-- ACE recourse actions from `dt_state_v1.recourse.actions`.
-- Hour-by-hour playback from `dt_timeseries_v1.frames`.
-- Manual override visual preview for actionable devices.
+- İki katlı 3D bina sahnesi.
+- `dt_state_v1.devices` üzerinden cihaz kataloğu görselleştirmesi.
+- `dt_state_v1.building` üzerinden bina tahmini ve zone durumu.
+- `dt_state_v1.recourse.actions` üzerinden ACE recourse önerileri.
+- `dt_timeseries_v1.frames` üzerinden saatlik playback akışı.
+- Müdahale edilebilir cihazlar için manuel görsel önizleme.
 
-## Notes
+## Notlar
 
-- Use a local HTTP server; direct `file://` opening can block JSON fetch.
-- The current dashboard simulates actions visually. It does not re-run the CatBoost model in browser.
-- The streaming ACE cards are precomputed by `generate_timeseries.py`; the browser only plays and applies stored states.
-- FACE diagnostic remains available in `Final/outputs/building_dt_recourse_results.csv`.
+- Yerel HTTP server kullanın; doğrudan `file://` ile açmak JSON isteklerini engelleyebilir.
+- Dashboard aksiyonları görsel olarak simüle eder; CatBoost modelini tarayıcıda yeniden çalıştırmaz.
+- Saatlik ACE kartları `generate_timeseries.py` ile önceden üretilir; tarayıcı yalnızca kayıtlı durumları oynatır.
+- FACE tanılama çıktısı `outputs/building_dt_recourse_results.csv` dosyasında bulunur.
 
-## Regenerate Hourly Stream
+## Saatlik Akışı Yeniden Üretme
 
 ```bash
-.venv39/bin/python Final/dt_dashboard/generate_timeseries.py
+python dt_dashboard/generate_timeseries.py
 ```

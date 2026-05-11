@@ -7,42 +7,57 @@ const EPS = 1e-9;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const colors = {
-  hvac: 0x00897b,
-  lighting: 0xf2b84b,
-  plug_load: 0x3d63dd,
-  service_load: 0x1f9d55,
+  hvac: 0x0f766e,
+  lighting: 0xd97706,
+  plug_load: 0x2563eb,
+  service_load: 0x16a34a,
   shared: 0x7c3aed,
-  action: 0xf97316,
-  immutable: 0xd73a49,
-  floor: 0xf7fbff,
-  floorEdge: 0x0077b6,
-  wall: 0xb8d5e9,
-  room: 0xeaf4fb,
+  action: 0xea580c,
+  immutable: 0xdc2626,
+  floor: 0xf8fafc,
+  floorEdge: 0x0f766e,
+  wall: 0xcbd5e1,
+  room: 0xecfdf5,
 };
 
 const categoryLabels = {
   hvac: "HVAC",
-  lighting: "Lighting",
-  plug_load: "Plug load",
-  service_load: "Service",
-  shared: "Shared",
+  lighting: "Aydınlatma",
+  plug_load: "Priz yükü",
+  service_load: "Servis yükü",
+  appliance: "Cihaz yükü",
+  shared: "Ortak yük",
+  other: "Diğer",
+};
+
+const floorLabels = {
+  floor1: "1. Kat",
+  floor2: "2. Kat",
+  shared: "Ortak yük",
+};
+
+const floorFilterLabels = {
+  all: "Tüm cihazlar",
+  floor1: "1. Kat",
+  floor2: "2. Kat",
+  shared: "Ortak yükler",
 };
 
 const ROOM_LAYOUTS = {
   floor1: [
-    { name: "Lobby", x: -3.55, z: -1.55, w: 2.25, d: 1.95 },
-    { name: "Office Wing", x: -0.45, z: -1.55, w: 3.75, d: 1.95 },
-    { name: "Copy / Utility", x: 3.35, z: -1.55, w: 2.35, d: 1.95 },
-    { name: "Kitchen + Bath", x: -3.35, z: 1.25, w: 2.65, d: 2.45 },
-    { name: "Open Office", x: 0.15, z: 1.25, w: 3.55, d: 2.45 },
-    { name: "Mechanical", x: 3.65, z: 1.25, w: 2.25, d: 2.45 },
+    { name: "Lobi", x: -3.55, z: -1.55, w: 2.25, d: 1.95 },
+    { name: "Ofis Kanadı", x: -0.45, z: -1.55, w: 3.75, d: 1.95 },
+    { name: "Kopyalama / Teknik", x: 3.35, z: -1.55, w: 2.35, d: 1.95 },
+    { name: "Mutfak + Banyo", x: -3.35, z: 1.25, w: 2.65, d: 2.45 },
+    { name: "Açık Ofis", x: 0.15, z: 1.25, w: 3.55, d: 2.45 },
+    { name: "Mekanik", x: 3.65, z: 1.25, w: 2.25, d: 2.45 },
   ],
   floor2: [
-    { name: "Classroom", x: -2.75, z: -1.35, w: 4.15, d: 2.35 },
-    { name: "Computer Room", x: 2.25, z: -1.35, w: 3.85, d: 2.35 },
-    { name: "Kitchen + Service", x: -3.35, z: 1.45, w: 3.05, d: 2.15 },
-    { name: "Office", x: 0.05, z: 1.45, w: 2.45, d: 2.15 },
-    { name: "Storage / Copy", x: 3.25, z: 1.45, w: 2.75, d: 2.15 },
+    { name: "Derslik", x: -2.75, z: -1.35, w: 4.15, d: 2.35 },
+    { name: "Bilgisayar Odası", x: 2.25, z: -1.35, w: 3.85, d: 2.35 },
+    { name: "Mutfak + Servis", x: -3.35, z: 1.45, w: 3.05, d: 2.15 },
+    { name: "Ofis", x: 0.05, z: 1.45, w: 2.45, d: 2.15 },
+    { name: "Depo / Kopyalama", x: 3.25, z: 1.45, w: 2.75, d: 2.15 },
   ],
 };
 
@@ -94,7 +109,7 @@ async function init() {
   try {
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) {
-      throw new Error(`DT state okunamadi: ${response.status}`);
+      throw new Error(`Digital Twin durum verisi okunamadı: ${response.status}`);
     }
 
     state.data = await response.json();
@@ -105,13 +120,16 @@ async function init() {
       applyFrameToData(0);
     }
 
-    setupScene();
     renderDashboard();
-    renderSceneFromData();
     bindEvents();
-    animate();
-
-    els.hudText.textContent = `${state.data.timestamp} | ${state.data.scope} | ${state.data.zone_config_version}`;
+    try {
+      setupScene();
+      renderSceneFromData();
+      animate();
+      els.hudText.textContent = formatHudStatus();
+    } catch (sceneError) {
+      showSceneFallback(sceneError);
+    }
   } catch (error) {
     showFatalError(error);
   }
@@ -133,7 +151,7 @@ function configureTimeline() {
   const frames = state.timeseries.frames;
   els.frameSlider.max = String(frames.length - 1);
   els.frameSlider.value = "0";
-  els.timelineLabel.textContent = `${frames.length.toLocaleString("tr-TR")} saatlik state hazir`;
+  els.timelineLabel.textContent = `${frames.length.toLocaleString("tr-TR")} saatlik durum hazır.`;
 }
 
 function currentFrame() {
@@ -162,14 +180,14 @@ function applyFrameToData(index) {
   state.data.floors = [
     {
       id: "floor1",
-      label: "1st Floor",
+      label: "1. Kat",
       current_kwh: frame.floor1_kwh,
       zone: zoneLabelFromValue(frame.floor1_kwh, state.data.zone_config.floor1),
       device_ids: state.data.floors?.find((floor) => floor.id === "floor1")?.device_ids || [],
     },
     {
       id: "floor2",
-      label: "2nd Floor",
+      label: "2. Kat",
       current_kwh: frame.floor2_kwh,
       zone: zoneLabelFromValue(frame.floor2_kwh, state.data.zone_config.floor2),
       device_ids: state.data.floors?.find((floor) => floor.id === "floor2")?.device_ids || [],
@@ -211,6 +229,10 @@ function normalizeFrameRecourse(recourse) {
 }
 
 function setupScene() {
+  if (!isWebglAvailable()) {
+    throw new Error("WebGL desteklenmiyor veya devre dışı.");
+  }
+
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf7fbff);
   scene.fog = new THREE.Fog(0xf7fbff, 14, 28);
@@ -265,8 +287,11 @@ function setupScene() {
 }
 
 function renderSceneFromData() {
-  createFloor("floor1", "Kat 1", 0);
-  createFloor("floor2", "Kat 2", 1.65);
+  if (!state.scene) {
+    return;
+  }
+  createFloor("floor1", "1. Kat", 0);
+  createFloor("floor2", "2. Kat", 1.65);
   createSharedServiceRail();
 
   state.data.devices.forEach((device) => {
@@ -458,7 +483,7 @@ function createDeviceMesh(device) {
     group.add(lock);
   }
 
-  const label = createTextSprite(shorten(device.label, 18), "#102033", "rgba(255, 255, 255, 0.82)");
+  const label = createTextSprite(shorten(displayDeviceName(device), 20), "#102033", "rgba(255, 255, 255, 0.9)");
   label.position.y = 0.52;
   label.visible = isAction;
   group.add(label);
@@ -480,6 +505,9 @@ function createDeviceGeometry(device) {
 }
 
 function createActionConnectors() {
+  if (!state.scene) {
+    return;
+  }
   [...state.scene.children].forEach((child) => {
     if (child.userData.isActionConnector) {
       state.scene.remove(child);
@@ -521,7 +549,7 @@ function createTextSprite(text, color, background) {
   canvas.height = 86 * scale;
   context.scale(scale, scale);
   context.fillStyle = background;
-  roundRect(context, 0, 0, 360, 86, 18);
+  roundRect(context, 0, 0, 360, 86, 8);
   context.fill();
   context.fillStyle = color;
   context.font = "700 24px Manrope, sans-serif";
@@ -565,22 +593,22 @@ function renderMetrics() {
     {
       label: "Anlık yük",
       value: formatKwh(building.current_total_kwh),
-      sub: "Bu saatteki bina durumu",
+      sub: "Seçili saatteki toplam tüketim",
     },
     {
-      label: "Sonraki saat",
+      label: "Sonraki saat tahmini",
       value: formatKwh(state.appliedRecourse ? recourse.after.predicted_kwh : building.predicted_t_plus_1_kwh),
-      sub: `Bölge ${state.appliedRecourse ? recourse.after.zone : building.predicted_zone}`,
+      sub: `Enerji zone'u ${formatZone(state.appliedRecourse ? recourse.after.zone : building.predicted_zone)}`,
     },
     {
-      label: "Hedef",
-      value: building.target_zone,
-      sub: recourse.success ? "ACE ile erişilebilir" : "Daha fazla müdahale gerekir",
+      label: "Hedef zone",
+      value: formatZone(building.target_zone),
+      sub: recourse.success ? "ACE önerisiyle erişilebilir" : "Ek müdahale gerekebilir",
     },
     {
       label: "Model",
       value: `R2 ${state.data.model.metrics.R2.toFixed(3)}`,
-      sub: `MAE ${state.data.model.metrics.MAE.toFixed(3)} | acc ${state.data.model.metrics.zone_accuracy.toFixed(3)}`,
+      sub: `MAE ${state.data.model.metrics.MAE.toFixed(3)} | zone doğruluğu ${state.data.model.metrics.zone_accuracy.toFixed(3)}`,
     },
   ];
 
@@ -607,17 +635,29 @@ function renderZones() {
 }
 
 function renderFloors() {
-  const maxKwh = Math.max(...state.data.floors.map((floor) => floor.current_kwh), state.data.shared_loads.current_kwh);
-  els.floorList.innerHTML = state.data.floors
-    .map((floor) => {
-      const percent = Math.max(4, Math.round((floor.current_kwh / maxKwh) * 100));
+  const items = [
+    ...state.data.floors.map((floor) => ({
+      title: floor.label || floorLabels[floor.id] || floor.id,
+      zone: formatZone(floor.zone),
+      current_kwh: floor.current_kwh,
+    })),
+    {
+      title: "Ortak yükler",
+      zone: "Paylaşılan",
+      current_kwh: state.data.shared_loads.current_kwh,
+    },
+  ];
+  const maxKwh = Math.max(...items.map((item) => item.current_kwh), EPS);
+  els.floorList.innerHTML = items
+    .map((item) => {
+      const percent = Math.max(4, Math.round((item.current_kwh / maxKwh) * 100));
       return `
         <article class="floor-card">
           <div class="floor-head">
-            <p class="floor-title">${floor.label}</p>
-            <span class="pill">${floor.zone}</span>
+            <p class="floor-title">${item.title}</p>
+            <span class="pill">${item.zone}</span>
           </div>
-          <p class="floor-kwh">${formatKwh(floor.current_kwh)}</p>
+          <p class="floor-kwh">${formatKwh(item.current_kwh)}</p>
           <div class="bar-shell" aria-hidden="true">
             <div class="bar-fill" style="--bar-value: ${percent}%"></div>
           </div>
@@ -633,8 +673,8 @@ function renderActions() {
   if (!actions.length) {
     els.actionList.innerHTML = `
       <div class="recourse-summary">
-        <strong>ACE bu saatte aksiyon önermiyor.</strong>
-        <p class="xai-copy">Tahmin zaten hedef bölge içinde olabilir veya azaltma ile anlamlı bir iyileşme bulunamamıştır.</p>
+        <strong>ACE bu saat için aksiyon önermiyor.</strong>
+        <p class="xai-copy">Tahmin hedef zone içinde olabilir veya mevcut azaltma seçenekleri anlamlı bir iyileşme üretmemiş olabilir.</p>
       </div>
     `;
     return;
@@ -642,11 +682,11 @@ function renderActions() {
 
   const summary = `
     <div class="recourse-summary">
-      <strong>${recourse.before.zone} seviyesinden ${recourse.after.zone} seviyesine inebilir.</strong>
+      <strong>${formatZone(recourse.before.zone)} seviyesinden ${formatZone(recourse.after.zone)} seviyesine inebilir.</strong>
       <p class="xai-copy">
         CatBoost tahmini ${formatKwh(recourse.before.predicted_kwh)} iken ACE önerisi
         ${formatKwh(recourse.after.predicted_kwh)} sonucunu verir.
-        ${recourse.success ? "Bu, hedef bölge için yeterli." : "Bu tek başına hedef için yeterli değil."}
+        ${recourse.success ? "Bu sonuç hedef zone için yeterlidir." : "Bu sonuç hedef zone için tek başına yeterli değildir."}
       </p>
     </div>
   `;
@@ -658,16 +698,16 @@ function renderActions() {
       return `
         <article class="action-card">
           <div class="action-head">
-            <p class="action-title">${index + 1}. ${action.feature}</p>
+            <p class="action-title">${index + 1}. ${displayFeatureName(action.label || action.feature)}</p>
             <span class="pill action">-${percent}%</span>
           </div>
           <p class="action-delta">${formatKwh(action.before_kwh)} → ${formatKwh(action.after_kwh)}</p>
-          <p class="metric-sub">Model etkisi ${formatKwh(modelDelta)} | maliyet ${action.cost_weight}</p>
+          <p class="metric-sub">Model etkisi ${formatKwh(modelDelta)} | müdahale maliyeti ${action.cost_weight}</p>
           <p class="xai-title">Neden bu cihaza dokunuyoruz?</p>
           <p class="xai-copy">
-            Bu yük kontrol edilebilir, bu saatte yüksek etkiye sahip ve
+            Bu yük kontrol edilebilir, seçili saatte yüksek etkiye sahiptir ve
             ${action.cap_percent || percent}% operasyonel azaltma sınırı içinde kalır.
-            Bu nedenle hedef bölgeye inmek için öncelikli adaydır.
+            Bu nedenle hedef zone'a yaklaşmak için öncelikli adaydır.
           </p>
           <button class="button ghost" type="button" data-focus-device="${action.device_id}">
             Cihaza odaklan
@@ -682,8 +722,8 @@ function renderManualOptions() {
   const options = state.data.devices
     .map((device) => {
       const disabled = device.actionable ? "" : "disabled";
-      const suffix = device.actionable ? "" : " - değişmez";
-      return `<option value="${device.id}" ${disabled}>${device.label}${suffix}</option>`;
+      const suffix = device.actionable ? "" : " - sabit yük";
+      return `<option value="${device.id}" ${disabled}>${displayDeviceName(device)}${suffix}</option>`;
     })
     .join("");
   els.manualDevice.innerHTML = options;
@@ -696,7 +736,7 @@ function renderManualOptions() {
 
 function renderInspector(device) {
   if (!device) {
-    els.inspector.innerHTML = `<p class="empty-state">Sahneden veya listeden bir cihaz seç.</p>`;
+    els.inspector.innerHTML = `<p class="empty-state">Detayları görmek için sahneden veya ACE listesinden bir cihaz seçin.</p>`;
     return;
   }
 
@@ -704,12 +744,12 @@ function renderInspector(device) {
   const actionPill = action
     ? `<span class="pill action">ACE aksiyonu -${Math.round(action.reduction_fraction * 100)}%</span>`
     : "";
-  const lockPill = device.actionable ? "" : `<span class="pill locked">değişmez</span>`;
+  const lockPill = device.actionable ? "" : `<span class="pill locked">sabit yük</span>`;
   const cap = Math.round(device.max_auto_reduction_fraction * 100);
 
   els.inspector.innerHTML = `
-    <h3 class="device-title">${device.label}</h3>
-    <p class="metric-sub">${categoryLabels[device.category] || device.category} | ${device.floor}</p>
+    <h3 class="device-title">${displayDeviceName(device)}</h3>
+    <p class="metric-sub">${categoryLabels[device.category] || device.category} | ${floorLabels[device.floor] || device.floor}</p>
     <div class="device-meta">
       <span class="pill">${formatKwh(device.current_kwh)}</span>
       <span class="pill">sınır ${cap}%</span>
@@ -718,7 +758,7 @@ function renderInspector(device) {
       ${lockPill}
     </div>
     <p class="metric-sub">
-      ${action ? `Önerilen değer: ${formatKwh(action.after_kwh)} | fark ${formatKwh(action.delta_kwh)}` : "Bu cihaz mevcut recourse setinde değişmiyor."}
+      ${action ? `Önerilen değer: ${formatKwh(action.after_kwh)} | azaltım ${formatKwh(action.delta_kwh)}` : "Bu cihaz mevcut ACE öneri setinde değişmiyor."}
     </p>
   `;
 }
@@ -739,7 +779,7 @@ function selectFrame(index) {
   if (state.selectedDeviceId) {
     renderInspector(state.deviceById.get(state.selectedDeviceId));
   }
-  els.hudText.textContent = `${state.data.timestamp} | ${state.data.building.predicted_zone} -> ${state.data.building.target_zone}`;
+  els.hudText.textContent = `${formatTimestamp(state.data.timestamp)} | ${formatZone(state.data.building.predicted_zone)} → ${formatZone(state.data.building.target_zone)}`;
 }
 
 function updateTimelineUi() {
@@ -815,7 +855,7 @@ function bindEvents() {
     highlightRecourse(true);
     renderMetrics();
     renderZones();
-    els.hudText.textContent = `ACE uygulandı | ${state.data.recourse.before.zone} → ${state.data.recourse.after.zone}`;
+    els.hudText.textContent = `ACE uygulandı | ${formatZone(state.data.recourse.before.zone)} → ${formatZone(state.data.recourse.after.zone)}`;
   });
 
   els.resetScene.addEventListener("click", () => {
@@ -829,7 +869,7 @@ function bindEvents() {
     renderZones();
     renderActions();
     renderInspector(null);
-    els.hudText.textContent = `${state.data.timestamp} | ${state.data.scope} | ${state.data.zone_config_version}`;
+    els.hudText.textContent = formatHudStatus();
   });
 
   els.floorButtons.forEach((button) => {
@@ -907,6 +947,9 @@ function focusDevice(deviceId) {
 }
 
 function highlightRecourse(enabled) {
+  if (!state.scene) {
+    return;
+  }
   const actionIds = new Set(state.data.recourse.actions.map((action) => action.device_id));
   state.data.recourse.actions.forEach((action) => {
     const meshState = state.deviceMeshes.get(action.device_id);
@@ -947,7 +990,7 @@ function applyFloorFilter() {
     const visible = state.floorFilter === "all" || device.floor === state.floorFilter;
     meshState.group.visible = visible;
   });
-  els.hudText.textContent = `Filtre: ${state.floorFilter}`;
+  els.hudText.textContent = `Filtre: ${floorFilterLabels[state.floorFilter] || state.floorFilter}`;
 }
 
 function previewManualOverride() {
@@ -959,12 +1002,16 @@ function previewManualOverride() {
   state.manualPreviewId = device.id;
   const reduction = Number(els.manualReduction.value) / 100;
   const mesh = state.deviceMeshes.get(device.id);
+  if (!mesh) {
+    els.hudText.textContent = "Manuel önizleme için 3D sahne gerekli.";
+    return;
+  }
   mesh.material.color.set(0xffb454);
   mesh.material.emissive.set(0xffb454);
   mesh.material.emissiveIntensity = 0.65;
   mesh.group.scale.setScalar(Math.max(0.38, 1 - reduction * 0.42));
   focusDevice(device.id);
-  els.hudText.textContent = `Manuel simülasyon: ${device.label} -${Math.round(reduction * 100)}%`;
+  els.hudText.textContent = `Manuel önizleme: ${displayDeviceName(device)} -%${Math.round(reduction * 100)}`;
 }
 
 function clearManualPreview() {
@@ -982,7 +1029,7 @@ function clearManualPreview() {
     mesh.group.scale.setScalar(1);
   }
   state.manualPreviewId = null;
-  els.hudText.textContent = "Manuel simülasyon temizlendi";
+  els.hudText.textContent = "Manuel önizleme temizlendi.";
 }
 
 function updateManualHelper() {
@@ -993,7 +1040,7 @@ function updateManualHelper() {
   }
   const capPercent = Math.round((device.max_auto_reduction_fraction ?? 0.8) * 100);
   const capped = Math.min(reduction, capPercent);
-  els.manualHelper.textContent = `${device.label}: seçilen ${reduction}%, otomatik sınır ${capPercent}%. Görsel önizleme ${capped}% ile temsil edilir.`;
+  els.manualHelper.textContent = `${displayDeviceName(device)}: seçilen oran %${reduction}, otomatik sınır %${capPercent}. Görsel önizleme %${capped} azaltımı temsil eder.`;
 }
 
 function pulseDevice(deviceId) {
@@ -1063,7 +1110,7 @@ function deviceColor(device) {
 
 function maxReductionFraction(name, hour) {
   const normalized = String(name).toLowerCase();
-  if (normalized.includes("refridgerator")) {
+  if (normalized.includes("refridgerator") || normalized.includes("refrigerator")) {
     return 0;
   }
   if (normalized.includes("exterior lights")) {
@@ -1081,12 +1128,28 @@ function maxReductionFraction(name, hour) {
   return 0.8;
 }
 
+function isWebglAvailable() {
+  try {
+    const canvas = document.createElement("canvas");
+    return Boolean(
+      window.WebGLRenderingContext &&
+        (canvas.getContext("webgl2") || canvas.getContext("webgl") || canvas.getContext("experimental-webgl")),
+    );
+  } catch {
+    return false;
+  }
+}
+
 function findActionForDevice(deviceId) {
   return state.data?.recourse?.actions?.find((action) => action.device_id === deviceId);
 }
 
 function formatKwh(value) {
   return `${Number(value).toFixed(3)} kWh`;
+}
+
+function formatZone(value) {
+  return String(value || "").toUpperCase();
 }
 
 function zoneLabelFromValue(value, thresholds) {
@@ -1109,15 +1172,70 @@ function shorten(text, maxLength) {
   return text.length > maxLength ? `${text.slice(0, maxLength - 1)}.` : text;
 }
 
+function displayDeviceName(device) {
+  return displayFeatureName(device?.label || device?.source_column || "");
+}
+
+function displayFeatureName(value) {
+  return normalizeLabel(value);
+}
+
+function normalizeLabel(value) {
+  return String(value || "")
+    .trim()
+    .replace(/Refridgerator/gi, "Refrigerator")
+    .replace(/Bathoom/gi, "Bathroom")
+    .replace(/\b1st flr\b/gi, "1. Kat")
+    .replace(/\b2nd flr\b/gi, "2. Kat")
+    .replace(/Computer Room/gi, "Bilgisayar Odası")
+    .replace(/Copy Room/gi, "Kopyalama Odası")
+    .replace(/Storage Room/gi, "Depo")
+    .replace(/Utility Room/gi, "Teknik Oda")
+    .replace(/Classroom/gi, "Derslik")
+    .replace(/Lobby/gi, "Lobi")
+    .replace(/Office/gi, "Ofis")
+    .replace(/Bathroom/gi, "Banyo")
+    .replace(/Kitchen/gi, "Mutfak")
+    .replace(/Lights/gi, "Aydınlatma")
+    .replace(/Exterior/gi, "Dış")
+    .replace(/Water Heater/gi, "Su Isıtıcı")
+    .replace(/Water Cooler/gi, "Su Sebili")
+    .replace(/Dishwasher/gi, "Bulaşık Makinesi")
+    .replace(/Oven/gi, "Fırın")
+    .replace(/\brecp\b/gi, "priz")
+    .replace(/\s+/g, " ");
+}
+
+function formatHudStatus() {
+  return `${formatTimestamp(state.data.timestamp)} | ${formatZone(state.data.building.predicted_zone)} → ${formatZone(state.data.building.target_zone)} | ${state.data.zone_config_version}`;
+}
+
+function showSceneFallback(error) {
+  console.info("3D scene fallback:", error.message);
+  els.canvas.hidden = true;
+  els.hudText.textContent = "3D sahne kullanılamıyor.";
+  const frame = els.canvas.closest(".scene-frame");
+  frame.classList.add("scene-frame--fallback");
+  const fallback = document.createElement("div");
+  fallback.className = "scene-fallback";
+  fallback.setAttribute("role", "status");
+  fallback.innerHTML = `
+    <p class="eyebrow">3D sahne hazır değil</p>
+    <h3>Tarayıcı WebGL bağlamı oluşturamadı.</h3>
+    <p>Dashboard verileri, metrikler ve ACE önerileri yüklenmeye devam eder. 3D sahne için WebGL destekli güncel bir tarayıcı kullanın.</p>
+  `;
+  frame.append(fallback);
+}
+
 function showFatalError(error) {
   const message = `
     <div class="error-panel" role="alert">
-      <h2>DT verisi yüklenemedi</h2>
+      <h2>Digital Twin verisi yüklenemedi</h2>
       <p>${error.message}</p>
-      <p>Bu dashboard'u dosya olarak açmak yerine <code>Final</code> klasöründe local HTTP server ile çalıştır.</p>
+      <p>Dashboard'u dosya olarak açmak yerine proje kökünde yerel HTTP server ile çalıştırın.</p>
     </div>
   `;
   document.querySelector("#main").innerHTML = message;
-  els.hudText.textContent = "Data load error";
+  els.hudText.textContent = "Veri yükleme hatası";
   console.error(error);
 }

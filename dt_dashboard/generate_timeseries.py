@@ -144,6 +144,11 @@ def intervention_weight(feature_name: str) -> int:
 FEATURE_WEIGHTS = {col: intervention_weight(col) for col in ALL_LOADS}
 IMMUTABLE_LOADS = {"Refridgerator"}
 
+CANONICAL_NAME_OVERRIDES = {
+    "Refridgerator": "Refrigerator",
+    "2nd flr Bathoom": "2nd flr Bathroom",
+}
+
 
 def feature_floor(feature_name: str) -> str:
     if feature_name in FLOOR1_LOADS:
@@ -159,7 +164,7 @@ def feature_category(feature_name: str) -> str:
         return "hvac"
     if "light" in name:
         return "lighting"
-    if "refridgerator" in name or "water heater" in name or "water cooler" in name or "oven" in name:
+    if "refridgerator" in name or "refrigerator" in name or "water heater" in name or "water cooler" in name or "oven" in name:
         return "appliance"
     if "recp" in name or "receptacle" in name:
         return "plug_load"
@@ -169,10 +174,37 @@ def feature_category(feature_name: str) -> str:
 
 
 def device_id(feature_name: str) -> str:
-    cleaned = feature_name.strip().lower()
+    cleaned = CANONICAL_NAME_OVERRIDES.get(feature_name, feature_name).strip().lower()
     for token in ["#", "+", "-", "(", ")", "/"]:
         cleaned = cleaned.replace(token, " ")
     return "_".join(cleaned.split())
+
+
+def display_label(feature_name: str) -> str:
+    label = CANONICAL_NAME_OVERRIDES.get(feature_name, feature_name).strip()
+    replacements = [
+        ("1st flr", "1. Kat"),
+        ("2nd flr", "2. Kat"),
+        ("Computer Room", "Bilgisayar Odası"),
+        ("Copy Room", "Kopyalama Odası"),
+        ("Storage Room", "Depo"),
+        ("Utility Room", "Teknik Oda"),
+        ("Classroom", "Derslik"),
+        ("Lobby", "Lobi"),
+        ("Office", "Ofis"),
+        ("Bathroom", "Banyo"),
+        ("Kitchen", "Mutfak"),
+        ("Lights", "Aydınlatma"),
+        ("Exterior", "Dış"),
+        ("Water Heater", "Su Isıtıcı"),
+        ("Water Cooler", "Su Sebili"),
+        ("Dishwasher", "Bulaşık Makinesi"),
+        ("Oven", "Fırın"),
+        ("recp", "priz"),
+    ]
+    for source, target in replacements:
+        label = label.replace(source, target)
+    return " ".join(label.split())
 
 
 def max_reduction_fraction_for_feature(feature_name: str, hour_of_day: int | None = None) -> float:
@@ -211,7 +243,7 @@ def build_device_catalog() -> list[dict[str, Any]]:
         devices.append(
             {
                 "id": device_id(feature),
-                "label": feature.strip(),
+                "label": display_label(feature),
                 "source_column": feature,
                 "floor": feature_floor(feature),
                 "category": feature_category(feature),
@@ -293,6 +325,7 @@ def ace_stream_greedy(model: CatBoostRegressor, row: pd.Series, before_kwh: floa
         actions.append(
             {
                 "feature": feature,
+                "label": display_label(feature),
                 "device_id": device_id(feature),
                 "before_kwh": round(before_value, 4),
                 "after_kwh": round(after_value, 4),
@@ -369,7 +402,7 @@ def main() -> None:
             "target": TARGET_COL,
             "metrics": {k: round(v, 6) for k, v in metrics.items()},
         },
-        "feature_order": ALL_LOADS,
+        "feature_order": [display_label(feature) for feature in ALL_LOADS],
         "devices": build_device_catalog(),
         "frames": frames,
     }

@@ -1,16 +1,16 @@
 # Ikok Final Digital Twin
 
-Leakage-safe smart building Digital Twin demo for one-step-ahead energy prediction and ACE/FACE-style recourse visualization.
+Akıllı bina enerji tüketimi için sızıntı kontrollü `H(t) -> H(t+1)` tahmin demosu. Proje, CatBoost tabanlı tahmin çıktısını ACE/FACE recourse analizleriyle birleştirir ve sonuçları statik bir 3D Digital Twin dashboard üzerinde gösterir.
 
-## Contents
+## İçerik
 
-- `Final.ipynb`: model training, benchmark, CatBoost tuning, recourse and DT JSON generation notebook.
-- `WholeBuilding_EnergyConsumptionDataSet.xlsx`: source building energy dataset.
-- `outputs/`: precomputed model metrics, recourse outputs, device catalog, `dt_state_v1.json` and `dt_timeseries_v1.json`.
-- `dt_dashboard/`: standalone 3D Digital Twin dashboard.
-- `index.html`: root redirect to the dashboard.
+- `Final.ipynb`: model eğitimi, benchmark, CatBoost optimizasyonu, recourse ve Digital Twin JSON üretim notebook'u.
+- `WholeBuilding_EnergyConsumptionDataSet.xlsx`: kaynak akıllı bina enerji veri seti.
+- `outputs/`: hazır model metrikleri, recourse çıktıları, cihaz kataloğu, `dt_state_v1.json` ve `dt_timeseries_v1.json`.
+- `dt_dashboard/`: bağımsız çalışan 3D Digital Twin dashboard.
+- `index.html`: proje kökünden dashboard'a yönlendirme sayfası.
 
-## Quick Start
+## Hızlı Başlangıç
 
 ```bash
 python3 -m venv .venv
@@ -19,32 +19,31 @@ pip install -r requirements.txt
 python3 -m http.server 8765
 ```
 
-Open:
+Aç:
 
 ```text
 http://127.0.0.1:8765/
 ```
 
-The root endpoint redirects to:
+Kök adres otomatik olarak dashboard'a yönlenir:
 
 ```text
 http://127.0.0.1:8765/dt_dashboard/
 ```
 
-## Regenerate Dashboard Time Series
+## Saatlik Dashboard Akışını Yeniden Üretme
 
-The dashboard already includes precomputed JSON outputs. To regenerate the hourly stream:
+Dashboard hazır JSON çıktılarıyla gelir. Saatlik akışı yeniden üretmek için:
 
 ```bash
 python dt_dashboard/generate_timeseries.py
 ```
 
-This reads `WholeBuilding_EnergyConsumptionDataSet.xlsx` from the repo root and writes `outputs/dt_timeseries_v1.json`.
+Komut repo kökündeki `WholeBuilding_EnergyConsumptionDataSet.xlsx` dosyasını okur ve `outputs/dt_timeseries_v1.json` çıktısını günceller.
 
-## Notes
+## Notlar
 
-- The dashboard is static and reads JSON files from `outputs/`.
-- Browser-side code does not retrain CatBoost.
-- `Refridgerator` is treated as immutable in the recourse layer.
-- The current fixed zone configuration is `v1_fixed_kwh`.
-
+- Dashboard statiktir ve `outputs/` altındaki JSON dosyalarını okur.
+- Tarayıcı tarafında CatBoost yeniden eğitilmez.
+- `Refrigerator` recourse katmanında değiştirilemeyen yük olarak ele alınır.
+- Geçerli sabit zone yapılandırması `v1_fixed_kwh`.
