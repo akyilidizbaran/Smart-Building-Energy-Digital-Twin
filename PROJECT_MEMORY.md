@@ -2,8 +2,8 @@
 
 ## 0) TL;DR
 
-* Şu an ne yapıyoruz? Final Digital Twin demo projesi GitHub'a pushlanabilir temiz teslim klasörü olarak hazırlandı.
-* Son değişiklik neydi? Gereksiz çalışma artefaktları dışarıda bırakıldı; dashboard, notebook, dataset ve gerekli JSON/CSV çıktıları korundu.
+* Şu an ne yapıyoruz? Smart Building Energy Digital Twin projesi GitHub üzerinden paylaşılabilir public demo repo haline getirildi.
+* Son değişiklik neydi? Repo/proje adı `Smart-Building-Energy-Digital-Twin` olarak güncellendi ve public visibility hedeflendi.
 * Bir sonraki net adım ne? Repo klonlandıktan sonra `python3 -m http.server 8765` ile dashboard çalıştırılabilir.
 
 ## 1) Proje Amacı ve Kapsam
@@ -43,10 +43,13 @@
 
 * 2026-05-11 — Karar: GitHub teslim paketi `Ikok_Final` altında temiz repo olarak hazırlanacak | Gerekçe: Ana workspace 11GB ve birçok gereksiz runtime/rapor artefaktı içeriyor | Etki: Sadece Final DT için gerekli dosyalar repoya girecek | Alternatifler: Ana workspace'i direkt git repo yapmak.
 * 2026-05-11 — Karar: Dataset repoya dahil edilecek | Gerekçe: Kullanıcı veri setinin yüklenebileceğini belirtti ve collaborator'ın direkt çalışabilmesi gerekiyor | Etki: `WholeBuilding_EnergyConsumptionDataSet.xlsx` repo root'ta bulunur | Alternatifler: Dataset'i GitHub dışında paylaşmak.
+* 2026-05-31 — Karar: Repo adı `Smart-Building-Energy-Digital-Twin` olacak | Gerekçe: `Ikok_Final` proje içeriğini açıklamıyor; yeni ad akıllı bina enerji tahmini, recourse ve Digital Twin kapsamını daha doğru temsil ediyor | Etki: GitHub repo URL'si proje odaklı hale gelir | Alternatifler: `Ikok_Final` adını korumak.
+* 2026-05-31 — Karar: Repo public yapılacak | Gerekçe: Kullanıcı repo visibility değerinin public yapılmasını istedi | Etki: Dataset ve demo çıktıları herkes tarafından görülebilir | Alternatifler: Private kalması.
 
 ## 7) Milestones
 
 * 2026-05-11 — Milestone: GitHub'a hazır temiz Final DT teslim klasörü oluşturuldu | Sonuç: Dashboard, notebook, dataset, outputs, README, requirements ve `.gitignore` hazır.
+* 2026-05-31 — Milestone: Repo adı ve paylaşım hazırlığı güncellendi | Sonuç: README/proje hafızası yeni proje adına göre revize edildi.
 
 ## 8) Yapılacaklar
 
@@ -57,4 +60,3 @@
 
 * `dt_timeseries_v1.json` yaklaşık 28MB; GitHub limitini aşmıyor ama repo boyutunu artırıyor.
 * Dashboard static JSON okur; canlı model skorlama için ayrıca backend gerekir.
-

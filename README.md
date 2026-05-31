@@ -1,4 +1,4 @@
-# Ikok Final Digital Twin
+# Smart Building Energy Digital Twin
 
 Akıllı bina enerji tüketimi için sızıntı kontrollü `H(t) -> H(t+1)` tahmin demosu. Proje, CatBoost tabanlı tahmin çıktısını ACE/FACE recourse analizleriyle birleştirir ve sonuçları statik bir 3D Digital Twin dashboard üzerinde gösterir.
 
